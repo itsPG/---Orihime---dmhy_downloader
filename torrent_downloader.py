@@ -14,9 +14,9 @@ print("CJ END")
 
 
 opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
-#main_page = opener.open("http://share.dmhy.org/").read()
-#open("webtmp.txt", "wb").write(main_page)
-#os.system("node node_html_tag.js")
+main_page = opener.open("http://share.dmhy.org/").read()
+open("webtmp.txt", "wb").write(main_page)
+os.system("node node_html_tag.js")
 filter_data = codecs.open("filter.txt", "r", "utf8").readlines()
 filter_list = []
 for i in filter_data:

@@ -1,6 +1,6 @@
 import win32utf8
 import http.cookiejar, urllib.request
-import re, os, getpass
+import re, os, getpass, sys
 
 username = "smartPG@gmail.com"
 password = ""
@@ -19,7 +19,10 @@ print(m.group(1));
 
 captcha_pic = opener.open("http://share.dmhy.org/common/generate-captcha?code=" + m.group(1)).read()
 open("PG.jpg", 'wb').write(captcha_pic)
-os.system("mspaint PG.jpg");
+if sys.platform == "win32":
+	os.system("mspaint PG.jpg")
+else:
+	os.system("open PG.jpg")
 captcha_code = getpass.getpass("Captcha (won't shown on screen) : ");
 
 #ConsoleFile.wrap_standard_handles()
