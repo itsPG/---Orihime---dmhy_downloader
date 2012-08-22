@@ -1,0 +1,163 @@
+{
+	var global_log = "";
+	var global_catch_flag = false;
+	function PG_log(q)
+	{
+		global_log += q + "\n";
+	}
+	function Alert(q)
+	{
+		var red, blue, reset;
+		red   = '\u001b[31m';
+		blue  = '\u001b[36m';
+		reset = '\u001b[0m';
+		try
+		{
+			alert(q);
+		}
+		catch (err)
+		{
+			console.log(blue + "________________________________" + reset);
+			console.log(q);
+			console.log(blue + "________________________________" + reset);
+		}
+	}
+	function write_list_to_file(fn)
+	{
+		try
+		{
+			fs = require('fs');
+    		fs.writeFileSync(fn, global_log,"utf8");
+    	}
+    	catch (err)
+    	{
+    		Alert(err);
+    	}
+	}
+}
+start
+  = a:html_body
+  {
+    //Alert(global_log);
+    write_list_to_file("parsed_web.txt");
+    return a;
+  }
+
+html_DOM_unit
+  = html_tag_start _ (html_DOM_unit / html_char+)+ _ html_tag_end 
+
+html_body
+  = _ a:html_content2*
+    {return a;}
+
+html_content2
+  = a:html_content _
+    {return a;}
+
+html_content
+  = html_tag
+  / a:html_char+
+    {
+      if (global_catch_flag == true)
+      {
+        PG_log(a.join(""));
+        global_catch_flag = false;
+      }
+      return a.join("");
+    }
+  / ignored_line
+
+html_tag
+  = html_tag_doctype
+  / html_tag_start
+  / html_tag_end
+  / html_tag_single
+
+html_tag_doctype
+  = "<!" [^>]+ ">"
+    { return "[DOCTYPE]"; }
+html_tag_single
+  = "<" _ a:tag_type _ b:(attr _)* "/" _ ">"
+
+html_tag_start
+  = "<" _ a:tag_type _ b:(attr _)* ">"
+    {
+      r = [];
+      r.push(a);
+      for (i = 0; i < b.length; i++)
+      {
+        r.push(b[i][0]);
+        /* *************************************************************** */
+        if (b[i][0][0] == "href")
+        {
+          link = b[i][0][1];
+          if (link.match(/topics\/view/)) global_catch_flag = true;
+          if (link.match(/topics\/down/)) PG_log(link);
+          
+        }
+        /* *************************************************************** */
+      }
+      return r;
+    }
+html_tag_end
+  = "<" _ "/" _ a:tag_type _ ">"
+    { return "/" + a; }
+
+tag_type
+  = "tr"
+  / "td"
+  / "span"
+  / "a"
+  / "font"
+  / a:[A-Za-z]+
+    { return a.join("");}
+
+attr
+  = a:identifier "=" b:attr_string
+    { return Array(a, b); }
+attr_string
+  = a:quote_string
+    { return a;}
+  / a:[A-Za-z0-9]+
+    { return a.join("");}
+
+ignored_line
+  = a:[^\n]* "\n"
+    {
+      //alert(a.join(""));
+      return "";
+    }
+identifier
+  = id:[A-Za-z0-9_]+
+    {return id.join("");}
+
+quote_string
+  = a:single_quote
+    { return a; }
+  / a:double_quote
+    { return a; }
+
+single_quote
+  = "'" content:single_quote_unit "'"
+    {return content;}
+
+single_quote_unit
+  = content:("\\\\" / "\\'" / [^'])* 
+    {return content.join("");}
+
+double_quote
+  = '"' content:double_quote_unit '"'
+    {return content;}
+
+double_quote_unit
+  = content:('\\\\' / '\\"' / [^"])*
+    {return content.join("");}
+
+html_char
+  = [^<>]
+ _ 
+   = [ \n\t\r]*
+    { return ""; }
+ __
+   = [ ]*
+     { return ""; }
