@@ -18,11 +18,11 @@ m = re.search("common\/generate\-captcha\?code=([0-9]+)", first_page)
 print(m.group(1));
 
 captcha_pic = opener.open("http://share.dmhy.org/common/generate-captcha?code=" + m.group(1)).read()
-open("PG.jpg", 'wb').write(captcha_pic)
+open("./tmp_files/PG.jpg", 'wb').write(captcha_pic)
 if sys.platform == "win32":
-	os.system("mspaint PG.jpg")
+	os.system("mspaint ./tmp_files/PG.jpg")
 else:
-	os.system("open PG.jpg")
+	os.system("open ./tmp_files/PG.jpg")
 captcha_code = getpass.getpass("Captcha (won't shown on screen) : ");
 
 #ConsoleFile.wrap_standard_handles()
@@ -43,4 +43,4 @@ ResponseData = opener.open(url).read().decode("utf8", 'ignore')
 print(ResponseData)
 for ind, cookie in enumerate(cj):
 	print("%d - %s" %(ind, cookie))
-cj.save("cookie.txt")
+cj.save("./tmp_files/cookie.txt")

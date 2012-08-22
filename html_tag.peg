@@ -39,7 +39,7 @@ start
   = a:html_body
   {
     //Alert(global_log);
-    write_list_to_file("parsed_web.txt");
+    write_list_to_file("./tmp_files/parsed_web.txt");
     return a;
   }
 
