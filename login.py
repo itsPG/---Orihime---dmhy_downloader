@@ -2,7 +2,7 @@ import win32utf8
 import http.cookiejar, urllib.request
 import re, os, getpass, sys
 
-username = "smartPG@gmail.com"
+username = "PG@miko.tw"
 password = ""
 captcha = ""
 
