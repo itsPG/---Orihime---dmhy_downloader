@@ -72,7 +72,7 @@ for title,torrent,rule in download_list:
 	#print(title, torrent, rule) 
 	print(title, rule)
 	name = "./torrents/" + re.search("hash_id\/([A-Za-z0-9]+)", torrent).group(1) + ".torrent"
-	if os.path.exists(name):
+	if os.path.exists(name) or os.path.exists(name + ".loaded"):
 		print("File already exists!")
 		skip_count += 1
 	else:
