@@ -6,7 +6,7 @@ import re, os
 
 
 cj = http.cookiejar.MozillaCookieJar()
-cj.load("./tmp_files/cookie.txt")
+cj.load("cookie.txt")
 for ind, cookie in enumerate(cj):
     print("%d - %s" %(ind, cookie))
 print("CJ END")
@@ -14,9 +14,9 @@ print("CJ END")
 
 
 opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
-main_page = opener.open("http://share.dmhy.org/").read()
-open("./tmp_files/webtmp.txt", "wb").write(main_page)
-os.system("node node_html_tag.js")
+#main_page = opener.open("http://share.dmhy.org/").read()
+#open("webtmp.txt", "wb").write(main_page)
+#os.system("node node_html_tag.js")
 filter_data = codecs.open("filter.txt", "r", "utf8").readlines()
 filter_list = []
 for i in filter_data:
@@ -25,7 +25,7 @@ for i in filter_data:
 	#print(tmp)
 	filter_list.append(tmp)
 
-main_page = codecs.open("./tmp_files/parsed_web.txt", "r", "utf8").readlines()
+main_page = codecs.open("parsed_web.txt", "r", "utf8").readlines()
 torrent_list = []
 while len(main_page):
 	i = main_page.pop(0)

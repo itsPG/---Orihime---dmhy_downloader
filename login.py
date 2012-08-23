@@ -20,7 +20,7 @@ print(m.group(1));
 captcha_pic = opener.open("http://share.dmhy.org/common/generate-captcha?code=" + m.group(1)).read()
 open("./tmp_files/PG.jpg", 'wb').write(captcha_pic)
 if sys.platform == "win32":
-	os.system("mspaint ./tmp_files/PG.jpg")
+	os.system("mspaint tmp_files\PG.jpg")
 else:
 	os.system("open ./tmp_files/PG.jpg")
 captcha_code = getpass.getpass("Captcha (won't shown on screen) : ");
@@ -40,7 +40,8 @@ url.add_header("User-Agent","Chrome/18.1.2.3")
 
 ResponseData = opener.open(url).read().decode("utf8", 'ignore')
 
-print(ResponseData)
+#print(ResponseData)
+
 for ind, cookie in enumerate(cj):
 	print("%d - %s" %(ind, cookie))
 cj.save("./tmp_files/cookie.txt")
