@@ -22,8 +22,10 @@ if len(sys.argv) > 1:
 	main_page = opener.open(sys.argv[1]).read()
 else:
 	main_page = opener.open("http://share.dmhy.org/").read()
+
 open("./tmp_files/webtmp.txt", "wb").write(main_page)
 os.system("node node_html_tag.js")
+
 filter_data = codecs.open("filter.txt", "r", "utf8").readlines()
 filter_list = []
 for i in filter_data:
@@ -32,6 +34,7 @@ for i in filter_data:
 	#print(tmp)
 	filter_list.append(tmp)
 #print(filter_list)
+
 main_page = codecs.open("./tmp_files/parsed_web.txt", "r", "utf8").readlines()
 torrent_list = []
 while len(main_page):
@@ -39,9 +42,11 @@ while len(main_page):
 	j = main_page.pop(0)
 	torrent_list.append((i,j))
 #print(torrent_list)
+
 download_list = []
 skip_count = 0
 ignore_count = 0
+
 for title,torrent in torrent_list:
 	#print(title, torrent)
 	add_flag = False
@@ -62,6 +67,7 @@ for title,torrent in torrent_list:
 			break
 	if not add_flag:
 		ignore_count += 1
+
 for title,torrent,rule in download_list:
 	#print(title, torrent, rule) 
 	print(title, rule)
